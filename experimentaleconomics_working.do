@@ -1,10 +1,10 @@
-clear
+*clear
 set mem 100m
 set matsize 800
 set more off
-use usingexperimentaleconomics.karlan.aer.dta
+/*use usingexperimentaleconomics.karlan.aer.dta
 
-log using analyzetrust.aer.final.log, replace
+log using analyzetrust.aer.final.log, replace*/
 
 *****TABLE 1 TRUST GAME RESULTS
 ***Basic Reusults
@@ -12,13 +12,19 @@ tab j2recib if j2a==0
 tab j2return if j2a==0
 
 ***Player B's reciprocity
-tab j2recib j2return if j2a==0, row
+tab j2recib j2return if j2a==0, row /*MD: the "number of coins player B received" in the regression 
+output lists 2,4,6 while in the table in the paper, it says 1,2,3.*/
 
 *****TABLE 2 SUMMARY STATS
+*MD: proportion of group of similar culture, Both players Indigenous; Both players Western; Player Western, partner Indigenous (this is written as .576 in the table, but as .0576 in the regression output; SE same in both); Player Indigenous, partner Western; Indigenous; Western
 ci j2samebc Ncult_cu_al_p j2both5 j2both1 j2Popp1 j2Popp5 j2cul5 j2cul1 if nocult==0 & (j2a~=.)
+*MD: distance to others in grou (min), partner lives within 10 minute walk, proportion of others who live within 10 minute walk
 ci Ndist_cu_al2 j2Pw100 Ndistw100_cu_al_p if nodist==0 & (j1action~=. | j2a~=.)
+*MD: instances of borrowing from group member in side-contract, number of other members able to name from memory, knew partner & name, completed high school, age
 ci r_ef_soc men_sum j2consc2 j2agedifabs edhi j2age j2age2 if j1action~=. | j2a~=.
+*MD: Attended/invited partner to party, Religion information
 ci j2samsig j2fiestaboth rel_ultd rel_no rel_bigig if  Mrelig==3 & (j1action~=. | j2a~=.)
+*MD: Financial Data Section
 ci simul_calc Cdescmax Cdropbad Cahovolsum if j1action~=. | j2a~=.
 
 *****Table 3
@@ -60,6 +66,6 @@ foreach Z in "regress Cdescmax" "dprobit Cdropbad" "regress Cahovolsum" {
 }
 
 
-log close
+*log close
 
 exit
